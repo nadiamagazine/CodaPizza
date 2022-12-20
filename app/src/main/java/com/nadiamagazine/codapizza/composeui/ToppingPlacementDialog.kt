@@ -21,6 +21,7 @@ import com.nadiamagazine.codapizza.model.ToppingPlacement
 @Composable
 fun ToppingPlacementDialog(
     topping: Topping,
+    onSetToppingPlacement: (placement: ToppingPlacement?) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     Dialog(onDismissRequest = { onDismissRequest }) {
@@ -37,12 +38,16 @@ fun ToppingPlacementDialog(
                 ToppingPlacement.values().forEach { placement ->
                     ToppingPlacementOption(
                         placementName = placement.label,
-                        onClick = { /* TODO */ }
+                        onClick = {
+                            onSetToppingPlacement(placement)
+                            onDismissRequest() }
                     )
                 }
                 ToppingPlacementOption(
                     placementName = R.string.placement_none,
-                    onClick = { /* TODO */ }
+                    onClick = {
+                        onSetToppingPlacement(null)
+                        onDismissRequest() }
                 )
             }
         }
