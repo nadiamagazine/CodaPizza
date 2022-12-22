@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.nadiamagazine.codapizza.composeui.AppTheme
 import com.nadiamagazine.codapizza.composeui.PizzaBuilderScreen
 import com.nadiamagazine.codapizza.composeui.ToppingCell
 import com.nadiamagazine.codapizza.model.Topping
@@ -23,15 +24,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CodaPizzaTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
+            AppTheme {
                     PizzaBuilderScreen()
                 }
             }
         }
     }
-}

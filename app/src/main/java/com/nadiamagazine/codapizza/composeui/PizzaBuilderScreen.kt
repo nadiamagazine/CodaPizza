@@ -1,22 +1,25 @@
 package com.nadiamagazine.codapizza.composeui
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nadiamagazine.codapizza.R
 import com.nadiamagazine.codapizza.model.Pizza
 import com.nadiamagazine.codapizza.model.Topping
-import com.nadiamagazine.codapizza.model.ToppingPlacement
 import java.text.NumberFormat
 
 
@@ -27,24 +30,34 @@ fun PizzaBuilderScreen(
 ) {
     var pizza by rememberSaveable { mutableStateOf(Pizza()) }
 
-    Column(
-        modifier = modifier
-    ) {
-        ToppingList(
-            pizza = pizza,
-            onEditPizza = { pizza = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f, fill = true)
-        )
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(id = R.string.app_name)) }
+            )
+        },
+        content = {
+            Column {
+                ToppingList(
+                    pizza = pizza,
+                    onEditPizza = { pizza = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, fill = true)
+                )
 
-        OrderButton(
-            pizza = pizza,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        )
-    }
+                OrderButton(
+                    pizza = pizza,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+            }
+
+        }
+    )
+
 
 }
 
@@ -70,6 +83,12 @@ private fun ToppingList(
     LazyColumn(
         modifier = modifier
     ) {
+        item {
+            PizzaHeroImage(
+                pizza = pizza,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
         items(Topping.values()) { topping ->
             ToppingCell(
                 topping = topping,
@@ -87,10 +106,11 @@ fun OrderButton(
     pizza: Pizza,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     Button(
         modifier = modifier,
         onClick = {
-            /*TODO*/
+            Toast.makeText(context, R.string.order_placed_toast, Toast.LENGTH_LONG).show()
         }) {
         val currencyFormatter = remember { NumberFormat.getCurrencyInstance() }
         val price = currencyFormatter.format(pizza.price)
